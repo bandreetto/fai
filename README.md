@@ -2,7 +2,7 @@
 
 > Use flanker nucleotides to predict A-site location in ribosome profiling data
 
-[![CI](https://github.com/your-user/fai/actions/workflows/ci.yml/badge.svg)](https://github.com/your-user/fai/actions/workflows/ci.yml)
+[![CI](https://github.com/bandreetto/fai/actions/workflows/ci.yml/badge.svg)](https://github.com/bandreetto/fai/actions/workflows/ci.yml)
 
 ---
 
