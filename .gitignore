@@ -1,0 +1,33 @@
+# Virtual environment (uv)
+.venv/
+
+# Editor/IDE settings
+.vscode/
+.idea/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Build artifacts
+*.egg-info/
+dist/
+build/
+
+# Pytest cache
+.pytest_cache/
+
+# pre-commit cache
+.pre-commit-config.yaml~
+.pre-commit/
+
+# ruff cache
+.ruff_cache/
+
+# Logs
+*.log
+
+# OS metadata
+.DS_Store
+Thumbs.db
