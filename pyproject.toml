@@ -1,0 +1,33 @@
+# pyproject.toml
+[project]
+name = "fai"
+version = "0.1.0"
+description = "Use flanker nucleotides to predict A-site location"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "black",
+  "ruff",
+  "pre-commit"
+]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.black]
+line-length = 88
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+select = ["E", "F", "W"]
+exclude = ["__pycache__", ".venv"]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
