@@ -1,3 +1,5 @@
-def add_numbers(a, b):
-    print("hello world")
-    return a + b
+from fai.fai.read import Read
+
+
+def add_flankers_to_read(reads: list[Read], gene_dict: dict) -> list[Read]:
+    raise NotImplementedError()
