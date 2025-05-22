@@ -1,4 +1,4 @@
-from fai.fai.read import Read
+from fai.read import Read
 
 
 def add_flankers_to_read(reads: list[Read], gene_dict: dict) -> list[Read]:

@@ -1,5 +1,5 @@
-from fai.fai import add_flankers_to_read
-from fai.fai.read import Read
+from fai import add_flankers_to_read
+from fai.read import Read
 
 
 def test_add_flankers_to_read():
