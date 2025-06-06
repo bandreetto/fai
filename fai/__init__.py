@@ -2,7 +2,7 @@ from fai.read import Read
 
 
 def add_flankers_to_reads(reads: list[Read], gene_dict: dict) -> list[Read]:
-    for read in reads:
+    for read in reads.copy():
         gene_sequence = gene_dict.get(read.gene_id)
 
         if not gene_sequence:
