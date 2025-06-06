@@ -21,6 +21,11 @@ def add_flankers_to_reads(reads: list[Read], gene_dict: dict) -> list[Read]:
 
 
 def get_flankers(gene_position: int, gene_size: int, gene_sequence: str) -> list[str]:
+    if len(gene_sequence) < gene_position + gene_size:
+        raise ValueError(
+            "Gene sequence is shorter than the specified gene position and size."
+        )
+
     leading_flankers_starting_index = gene_position - 3
     leading_flankers = [
         gene_sequence[leading_flankers_starting_index + i] for i in range(4)
