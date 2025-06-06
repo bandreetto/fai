@@ -1,7 +1,7 @@
 from fai.read import Read
 
 
-def add_flankers_to_read(reads: list[Read], gene_dict: dict) -> list[Read]:
+def add_flankers_to_reads(reads: list[Read], gene_dict: dict) -> list[Read]:
     for read in reads:
         gene_sequence = gene_dict.get(read.gene_id)
 

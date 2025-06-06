@@ -1,4 +1,4 @@
-from fai import add_flankers_to_read
+from fai import add_flankers_to_reads
 from fai.read import Read
 
 
@@ -13,7 +13,7 @@ def test_add_flankers_to_read():
         "gene2": "GCTCACTCATACTACACGAAGCAGTCGGCCGAATCCTCCGCACCCTGGGGGTCTCTCAACTCCGTGTGAAAAGTTCCTAT",  # noqa: E501
         "gene3": "CACCGCTTCCCCCTGCGAGCGGTGTCGCCAGGTTGAGCGTATGATGTCAGGTCTTTCAATATCATCCTGGAATGTATATT",  # noqa: E501
     }
-    reads_with_flankers = add_flankers_to_read(reads, fasta_dict)
+    reads_with_flankers = add_flankers_to_reads(reads, fasta_dict)
 
     expected_flankers = {
         "gene1": ["T", "C", "A", "G", "C", "A", "T", "C"],
