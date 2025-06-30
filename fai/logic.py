@@ -39,5 +39,5 @@ def get_flankers(gene_position: int, gene_size: int, gene_sequence: str) -> list
     return leading_flankers + trailing_flankers
 
 
-def calculate_delta(reads: list[Read]) -> int:
+def calculate_delta(reads: list[Read], gene_dict: dict) -> int:
     raise NotImplementedError()
