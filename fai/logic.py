@@ -40,4 +40,8 @@ def get_flankers(gene_position: int, gene_size: int, gene_sequence: str) -> list
 
 
 def calculate_delta(reads: list[Read], gene_dict: dict) -> int:
+    read_sizes = {read.size for read in reads}
+    if len(read_sizes) > 1:
+        raise ValueError("All reads must have the same size.")
+
     raise NotImplementedError()
