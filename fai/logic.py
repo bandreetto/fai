@@ -39,6 +39,10 @@ def get_flankers(gene_position: int, gene_size: int, gene_sequence: str) -> list
     return leading_flankers + trailing_flankers
 
 
+def map_valid_delta_positions_for_read(read: Read, gene: str) -> list[bool]:
+    raise NotImplementedError()
+
+
 def calculate_delta(reads: list[Read], gene_dict: dict) -> int:
     read_sizes = {read.size for read in reads}
     if len(read_sizes) > 1:
