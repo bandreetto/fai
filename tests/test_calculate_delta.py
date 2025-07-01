@@ -17,7 +17,9 @@ def test_calculate_delta():
 
     reads = [
         Read(
-            gene, start_codon_index - expected_delta + offset * reads_spacing, read_size
+            gene,
+            start_codon_index - (expected_delta - 1) + offset * reads_spacing,
+            read_size,
         )
         for gene in gene_dict
         for offset in range(
@@ -36,7 +38,9 @@ def test_calculate_delta():
 
     reads = [
         Read(
-            gene, start_codon_index - expected_delta + offset * reads_spacing, read_size
+            gene,
+            start_codon_index - (expected_delta - 1) + offset * reads_spacing,
+            read_size,
         )
         for gene in gene_dict
         for offset in range(
@@ -46,6 +50,8 @@ def test_calculate_delta():
             + 1,
         )
     ]
+
+    delta = calculate_delta(reads, gene_dict)
 
     assert delta == expected_delta
 
@@ -53,7 +59,9 @@ def test_calculate_delta():
 
     reads = [
         Read(
-            gene, start_codon_index - expected_delta + offset * reads_spacing, read_size
+            gene,
+            start_codon_index - (expected_delta - 1) + offset * reads_spacing,
+            read_size,
         )
         for gene in gene_dict
         for offset in range(
@@ -63,6 +71,8 @@ def test_calculate_delta():
             + 1,
         )
     ]
+
+    delta = calculate_delta(reads, gene_dict)
 
     assert delta == expected_delta
 

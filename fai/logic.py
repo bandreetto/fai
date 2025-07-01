@@ -62,4 +62,20 @@ def calculate_delta(reads: list[Read], gene_dict: dict) -> int:
     if len(read_sizes) > 1:
         raise ValueError("All reads must have the same size.")
 
-    raise NotImplementedError()
+    valid_A_site_positions = [
+        map_valid_A_site_positions_for_read(read, gene_dict) for read in reads
+    ]
+
+    deltas_dict = {
+        sum(
+            [
+                valid_A_site_position[delta]
+                for valid_A_site_position in valid_A_site_positions
+            ]
+        ): delta
+        for delta in range(10, 30)
+    }
+
+    max_valid_reads = max(deltas_dict.keys())
+
+    return deltas_dict[max_valid_reads] + 1  # deltas should start on 1 and not 0
