@@ -1,3 +1,4 @@
+from fai.consts import DELTA_RANGE, START_CODON_OFFSET, STOP_CODON_OFFSET
 from fai.contracts import Read
 
 
@@ -42,13 +43,9 @@ def get_flankers(gene_position: int, gene_size: int, gene_sequence: str) -> list
 def map_valid_A_site_positions_for_read(read: Read, gene_dict: dict) -> list[bool]:
     read_gene_indexes = [read.gene_position + i for i in range(read.size)]
 
-    starting_codon_offset = 20
-    stop_codon_offset = 20
-    cds_size = len(gene_dict[read.gene_id]) - (
-        starting_codon_offset + stop_codon_offset
-    )
+    cds_size = len(gene_dict[read.gene_id]) - (START_CODON_OFFSET + STOP_CODON_OFFSET)
 
-    gene_cds_indexes = [index - starting_codon_offset for index in read_gene_indexes]
+    gene_cds_indexes = [index - START_CODON_OFFSET for index in read_gene_indexes]
 
     valid_A_site_positions = [
         index >= 0 and index < cds_size and index % 3 == 0 for index in gene_cds_indexes
@@ -73,7 +70,7 @@ def calculate_delta(reads: list[Read], gene_dict: dict) -> int:
                 for valid_A_site_position in valid_A_site_positions
             ]
         ): delta
-        for delta in range(10, 30)
+        for delta in DELTA_RANGE
     }
 
     max_valid_reads = max(deltas_dict.keys())
