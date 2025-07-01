@@ -1,5 +1,5 @@
 from fai.contracts import Read
-from fai.logic import map_valid_delta_positions_for_read
+from fai.logic import map_valid_A_site_positions_for_read
 
 
 def test_map_valid_delta_positions_for_read():
@@ -44,7 +44,7 @@ def test_map_valid_delta_positions_for_read():
         False,  # Position 29
     ]
 
-    output = map_valid_delta_positions_for_read(read, gene_dict)
+    output = map_valid_A_site_positions_for_read(read, gene_dict)
 
     assert len(output) == read.size, "Result length does not match read size."
     assert output == expected_output
@@ -84,7 +84,7 @@ def test_map_valid_delta_positions_for_read():
         False,  # Position 29
     ]
 
-    output = map_valid_delta_positions_for_read(read, gene_dict)
+    output = map_valid_A_site_positions_for_read(read, gene_dict)
 
     assert len(output) == read.size, "Result length does not match read size."
     assert output == expected_output

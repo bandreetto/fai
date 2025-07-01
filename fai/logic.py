@@ -39,8 +39,22 @@ def get_flankers(gene_position: int, gene_size: int, gene_sequence: str) -> list
     return leading_flankers + trailing_flankers
 
 
-def map_valid_delta_positions_for_read(read: Read, gene: str) -> list[bool]:
-    raise NotImplementedError()
+def map_valid_A_site_positions_for_read(read: Read, gene_dict: dict) -> list[bool]:
+    read_gene_indexes = [read.gene_position + i for i in range(read.size)]
+
+    starting_codon_offset = 20
+    stop_codon_offset = 20
+    cds_size = len(gene_dict[read.gene_id]) - (
+        starting_codon_offset + stop_codon_offset
+    )
+
+    gene_cds_indexes = [index - starting_codon_offset for index in read_gene_indexes]
+
+    valid_A_site_positions = [
+        index >= 0 and index < cds_size and index % 3 == 0 for index in gene_cds_indexes
+    ]
+
+    return valid_A_site_positions
 
 
 def calculate_delta(reads: list[Read], gene_dict: dict) -> int:
