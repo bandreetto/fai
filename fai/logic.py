@@ -76,3 +76,7 @@ def calculate_delta(reads: list[Read], gene_dict: dict) -> int:
     max_valid_reads = max(deltas_dict.keys())
 
     return deltas_dict[max_valid_reads] + 1  # deltas should start on 1 and not 0
+
+
+def calculate_deltas_by_subset(reads: list[Read], gene_dict: dict) -> dict[str, int]:
+    raise NotImplementedError()
