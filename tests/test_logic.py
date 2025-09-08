@@ -1,5 +1,5 @@
-from fai import add_flankers_to_reads, get_flankers
-from fai.read import Read
+from fai.contracts import Read
+from fai.logic import add_flankers_to_reads, get_flankers
 
 
 def test_add_flankers_to_read():

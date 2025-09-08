@@ -1,4 +1,4 @@
-from fai.read import Read
+from fai.contracts import Read
 from fai.read_fasta import read_fasta
 from pathlib import Path
 

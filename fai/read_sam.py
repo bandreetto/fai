@@ -1,5 +1,5 @@
-from fai.read import Read
 from csv import reader
+from fai.contracts import Read
 
 
 def read_sam(sam_file_path: str) -> list[Read]:
