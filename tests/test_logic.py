@@ -16,9 +16,9 @@ def test_add_flankers_to_read():
     reads_with_flankers = add_flankers_to_reads(reads, fasta_dict)
 
     expected_flankers = {
-        "gene1": ["T", "C", "A", "G", "C", "A", "T", "C"],
-        "gene2": ["C", "A", "T", "A", "C", "A", "C", "C"],
-        "gene3": ["C", "T", "G", "C", "A", "T", "G", "A"],
+        "gene1": ["C", "A", "G", "C", "A", "T", "C", "G"],
+        "gene2": ["A", "T", "A", "C", "A", "C", "C", "C"],
+        "gene3": ["T", "G", "C", "G", "T", "G", "A", "T"],
     }
 
     for read in reads_with_flankers:
@@ -44,15 +44,15 @@ def test_add_flankers_to_read_with_invalid_gene():
 
 def test_get_flankers():
     gene1 = "CCTCAGCCTCACCCTTACTCCTTGCCCCAGTTCATCGCCCCCGATGGGTCTAGTCACCAATCAGCCACGCGTCAGGTCAT"  # noqa: E501
-    flankers1 = ["T", "C", "A", "G", "C", "A", "T", "C"]
+    flankers1 = ["C", "A", "G", "C", "A", "T", "C", "G"]
     assert flankers1 == get_flankers(5, 30, gene1)
 
     gene2 = "GCTCACTCATACTACACGAAGCAGTCGGCCGAATCCTCCGCACCCTGGGGGTCTCTCAACTCCGTGTGAAAAGTTCCTAT"  # noqa: E501
-    flankers2 = ["C", "A", "T", "A", "C", "A", "C", "C"]
+    flankers2 = ["A", "T", "A", "C", "A", "C", "C", "C"]
     assert flankers2 == get_flankers(10, 33, gene2)
 
     gene3 = "CACCGCTTCCCCCTGCGAGCGGTGTCGCCAGGTTGAGCGTATGATGTCAGGTCTTTCAATATCATCCTGGAATGTATATT"  # noqa: E501
-    flankers3 = ["C", "T", "G", "C", "A", "T", "G", "A"]
+    flankers3 = ["T", "G", "C", "G", "T", "G", "A", "T"]
     assert flankers3 == get_flankers(15, 28, gene3)
 
 
@@ -63,7 +63,7 @@ def test_get_flankers_gene_overflow():
     except ValueError as e:
         assert (
             str(e)
-            == "Gene sequence is shorter than the specified gene position and size."
+            == "Gene sequence is shorter than the specified gene position, size and flankers."  # noqa: E501
         )
     else:
         assert False, "Expected ValueError was not raised."

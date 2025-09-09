@@ -12,7 +12,6 @@ def test_calculate_delta():
 
     read_size = 30
     reads_spacing = 3
-
     expected_delta = 15
     minimum_read_starting_position = START_CODON_OFFSET - expected_delta - 1
 

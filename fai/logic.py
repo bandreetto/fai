@@ -1,3 +1,4 @@
+from collections import defaultdict
 from fai.consts import DELTA_RANGE, START_CODON_OFFSET, STOP_CODON_OFFSET
 from fai.contracts import Read
 
@@ -21,23 +22,18 @@ def add_flankers_to_reads(reads: list[Read], gene_dict: dict) -> list[Read]:
     ]
 
 
-def get_flankers(gene_position: int, gene_size: int, gene_sequence: str) -> list[str]:
-    if len(gene_sequence) < gene_position + gene_size:
+def get_flankers(gene_position: int, read_size: int, gene_sequence: str) -> list[str]:
+    if len(gene_sequence) < gene_position + read_size + 2:
         raise ValueError(
-            "Gene sequence is shorter than the specified gene position and size."
+            "Gene sequence is shorter than the specified gene position, size and flankers."  # noqa: E501
         )
 
-    leading_flankers_starting_index = gene_position - 3
-    leading_flankers = [
-        gene_sequence[leading_flankers_starting_index + i] for i in range(4)
-    ]
+    leading_flankers = gene_sequence[gene_position - 2 : gene_position + 2]
 
-    trailing_flankers_starting_index = leading_flankers_starting_index + gene_size
-    trailing_flankers = [
-        gene_sequence[trailing_flankers_starting_index + i] for i in range(4)
-    ]
+    read_end_position = gene_position + read_size
+    trailing_flankers = gene_sequence[read_end_position - 2 : read_end_position + 2]
 
-    return leading_flankers + trailing_flankers
+    return [nt for nt in leading_flankers + trailing_flankers]
 
 
 def map_valid_A_site_positions_for_read(read: Read, gene_dict: dict) -> list[bool]:
@@ -79,4 +75,18 @@ def calculate_delta(reads: list[Read], gene_dict: dict) -> int:
 
 
 def calculate_deltas_by_subset(reads: list[Read], gene_dict: dict) -> dict[str, int]:
-    raise NotImplementedError()
+    if not all(len(read.flankers) == 8 for read in reads):
+        raise ValueError("All reads must have flankers")
+
+    reads_by_subset = defaultdict(list)
+    for read in reads:
+        for flanker in range(8):
+            subset = f"{read.size}:F{flanker}:{read.flankers[flanker]}"
+            reads_by_subset[subset].append(read)
+
+    deltas_by_subset = {
+        subset: calculate_delta(reads_by_subset[subset], gene_dict)
+        for subset in reads_by_subset
+    }
+
+    return deltas_by_subset
