@@ -1,14 +1,21 @@
-from fai.read import Read
 from csv import reader
+
+from fai.read import Read
 
 
 def read_sam(sam_file_path: str) -> list[Read]:
-    file = open(sam_file_path, "r")
+    """Deserialize the reads in a SAM file.
 
-    sam_table = reader(file, delimiter="\t")
+    The SAM format can be extremely large.  To avoid holding two copies of the
+    data we now stream the CSV reader and build the resulting list of ``Read``
+    instances in a single pass.
+    """
 
-    headerless_list = [row for row in sam_table if not row[0].startswith("@")]
+    with open(sam_file_path, "r", encoding="utf-8") as file:
+        sam_table = reader(file, delimiter="\t")
 
-    filtered_list = [Read(row[2], int(row[3]), len(row[9])) for row in headerless_list]
-
-    return filtered_list
+        return [
+            Read(row[2], int(row[3]), len(row[9]))
+            for row in sam_table
+            if row and not row[0].startswith("@")
+        ]

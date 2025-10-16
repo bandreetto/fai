@@ -1,49 +1,49 @@
 def read_fasta(file_name, delimiter):
-    """fasta_file:object, from open() function
-    delimiter:str, modifier that designates any type of information in
-    the fasta definition line.
-    suggested delimiters: "gene_id=", "transcript_id=", "protein_name="
+    """Read a FASTA file returning the longest valid coding sequence per gene.
+
+    The original implementation loaded the whole file into memory which is
+    prohibitive for multi-gigabyte datasets.  We now stream the file line by
+    line which keeps the memory footprint small regardless of the file size.
     """
-    stop_codons = ("TAA", "TAG", "TGA")
-    fasta_file = open(file_name, "r")
-    fasta_list = fasta_file.read().split("\n")
-    fasta_dict = {}
-    first_line = True
-    gene_code = ""
-    gene_symbol = ""
-    for line in fasta_list:
-        if len(line) == 0:
-            continue
-        if line[0] == ">":
-            if first_line:
-                first_line = False
+
+    def _maybe_store_sequence(symbol: str, sequence: str, storage: dict) -> None:
+        if not sequence:
+            return
+
+        if (
+            len(sequence) % 3 == 0
+            and sequence.startswith("ATG")
+            and sequence[-3:] in stop_codons
+        ):
+            if symbol not in storage or len(storage[symbol]) < len(sequence):
+                storage[symbol] = sequence
+
+    stop_codons = {"TAA", "TAG", "TGA"}
+    fasta_dict: dict[str, str] = {}
+    gene_symbol: str | None = None
+    gene_code_parts: list[str] = []
+
+    with open(file_name, "r", encoding="utf-8") as fasta_file:
+        for raw_line in fasta_file:
+            line = raw_line.strip()
+            if not line:
+                continue
+
+            if line.startswith(">"):
+                if gene_symbol is not None:
+                    gene_code = "".join(gene_code_parts)
+                    _maybe_store_sequence(gene_symbol, gene_code, fasta_dict)
+
+                gene_code_parts = []
+                try:
+                    gene_symbol = line.split(delimiter, 1)[1].split(" ", 1)[0]
+                except IndexError:
+                    gene_symbol = "none"
             else:
-                if (
-                    (len(gene_code) % 3 == 0)
-                    and (gene_code[0:3] == "ATG")
-                    and (gene_code[-3:0] not in stop_codons)
-                ):
-                    # input in dict only if its len is multiple of 3 (codon length)
-                    # input in dict only if code starts in ATG
-                    # input in dict only if code ends in a stop codon
+                gene_code_parts.append(line)
 
-                    if gene_symbol not in fasta_dict:
-                        fasta_dict[gene_symbol] = gene_code
-                    # input in dict only if there is no code for current gene
-                    elif len(fasta_dict[gene_symbol]) < len(gene_code):
-                        fasta_dict[gene_symbol] = gene_code
-                    # or replace it if current code is longer than code in the dict.
+    if gene_symbol is not None:
+        gene_code = "".join(gene_code_parts)
+        _maybe_store_sequence(gene_symbol, gene_code, fasta_dict)
 
-            try:
-                gene_symbol = line.split(delimiter)[1]
-                gene_symbol = gene_symbol.split(" ")[0]
-            except IndexError:
-                gene_symbol = "none"
-
-            gene_code = ""
-
-        else:
-            gene_code += line
-
-    fasta_dict[gene_symbol] = gene_code
     return fasta_dict
